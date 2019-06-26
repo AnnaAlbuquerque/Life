@@ -1,0 +1,36 @@
+Algumas idéias para o projeto de LP1 - Life
+
+Célula -> classe
+	informações a serem armazendas (private):
+		. se está viva ou morta
+		. posição na matriz (i,j)
+
+	vizinhos vivos (private) - sabe quantos vizinhos estão vivos
+
+	public:
+		.construtor
+
+
+
+Life -> Propósito: Rep o ecossitema do Célula para 1 Geração.
+	Dados:
+		.Matriz de Células
+		.WxH
+		.história (?)
+
+Métodos/ Ações:
+	-> update: Aplicar as regras
+	-> operator == -> verifica igualdade
+	-> stable: 
+	-> extint: todo mundo ta morto
+	-> operator = -> copia de uma para o outro
+	-> get_alive -> retorna um vector de coordenadas, que representa as células que estão vivas
+	-> set_alive -> recebe um vector de coordendas, que representa as células que estão vivas
+
+Loglife -> Propósito: Guardar o histórico dos tabuleiros.
+
+LifeSimulation -> Propósito: instanciar os objetos e controlar o fluxo das alterações
+	.Pesquisar Game loop
+
+# Pesquisar hashtable e ver se é melhor para a aplicação
+# É possível que a repetição de uma imagem demore muito a acontecer, então temos que fazer algo eficiente.
