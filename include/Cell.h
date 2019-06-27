@@ -12,14 +12,14 @@ class Cell{
 
     public:
 
-        //! \brief Cell Constructor
-        Cell(){}
+        //! \brief Cell Constructors
+        Cell(){};
         Cell(position pos){
             matrix_position = pos;
-        }
+        };
 
         //! \brief Cell Destructor
-        ~Cell(){}
+        ~Cell(){};
 
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GETS
 
