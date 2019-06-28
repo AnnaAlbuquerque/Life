@@ -41,7 +41,7 @@ void Life::print_configuration(){
         std::cout << data.str() << std::endl;
 }
 
-void Life::check_neighbors(int i, int j){
+int Life::check_neighbors(int i, int j){
     //It'll be used to see how many neighbours a cell has
     int count = 0;
 
@@ -104,7 +104,27 @@ void Life::check_neighbors(int i, int j){
         count++;
     }
 
-    Config[i][j].set_alive_neighbors(count);    
+    return count;  
+}
+
+bool Life::check_if_alive(int row, int column){
+    for (int i = 0; i < alive_cells.size(); i++){
+        if (alive_cells[i].rowIndex == row && alive_cells[i].columnIndex == column){
+            return true;
+        }
+    }
+    return false;
+}
+
+void Life::reset_config(){
+    //Setting cells alive to false (at first they're all dead)
+    for(int i = 0; i < rows; i++){
+        for(int j = 0; j < columns; j++){
+
+            //setting cell variable alive to false
+            Config[i][j].set_alive(false);
+        }
+    }
 }
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GETS
@@ -113,8 +133,8 @@ std::vector<position> Life::get_alive(){
     return alive_cells;
 }
 
-std::vector<std::vector<Cell>> Life::get_config(){
-    return Config;
+std::vector<std::vector<Cell>>* Life::get_config(){
+    return &Config;
 }
 
 int Life::get_rows(){
@@ -146,12 +166,19 @@ void Life::set_rows_columns(int r, int c){
         Config[i].resize(columns);
     }
 
-    //Setting cells position, and alive to false (at first they're all dead)
+    //Setting cells alive to false (at first they're all dead)
     for(int i = 0; i < rows; i++){
         for(int j = 0; j < columns; j++){
 
             //setting cell variable alive to false
             Config[i][j].set_alive(false);
         }
+    }
+}
+
+void Life::set_vector_alive(std::vector<position> vector_position){
+    alive_cells.clear();
+    for (auto const& value: vector_position){
+        alive_cells.push_back(value);
     }
 }

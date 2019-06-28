@@ -15,11 +15,13 @@ class GameLoop{
     private: 
         Life life; // this will be our configuration + loogs
         char alive_char;
+        std::vector<std::vector<position>> log; // It will be used to safe all configurations. It will save only the positions of alive cells.
+        int number_configuration = 0; //It will save the number of configurations that happened
 
         struct user_options{ //will safe all the options that the user choose via command line argument
             std::string imgdir; // Specify directory where output images are written to
             int maxgen; //Maximum number of generations to simulate
-            int fps; //Number of generations presented per second
+            int fps = 1; //Number of generations presented per second
             int blocksize = 5; //Pixel size of a cell. Default = 5.
             std::string bkgcolor; //Color name for the background. Default GREEN.
             std::string alivecolor;  //Color name for representing alive cells. Default RED.
@@ -43,23 +45,20 @@ class GameLoop{
         //! \brief Used to read file with inital configuration
         void read_file();
 
-        // //! \brief It'll return true, if the Game is over
-        // bool GameOver();
+        //! \brief It'll return true, if the Game is over
+        bool GameOver();
 
-        // //! \brief This class is used to apply the rules
-        // void process_events();
+        //! \brief This class is used to apply the rules
+        void process_events();
 
-        // //! \brief Used to update configuration
-        // void Update();
+        //! \brief Responsible for the front-end, it will generate the images
+        void render();
 
-        // //! \brief Responsible for the front-end, it will generate the images
-        // void render();
+        //! \brief Verifies if a configuration is extint, returns true if it is.
+        bool extint(); 
 
-        // //! \brief Verifies if a configuration is extint, returns true if it is.
-        // bool extint(); 
-
-        // //! \brief Verifies if a configuration is stable, return true if it is.
-        // bool stable();
+        //! \brief Verifies if a configuration is stable, return true if it is.
+        bool stable();
 
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GETS
         
@@ -68,6 +67,9 @@ class GameLoop{
 
         //! \brief Returns char used to alive cells
         char get_alive_char();
+
+        //! \brief Return fps
+        int get_fps();
 
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SETS
 

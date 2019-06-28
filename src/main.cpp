@@ -1,22 +1,18 @@
-#include <iostream> //std::cout
+#include <unistd.h>  // usleep()
 #include "../include/GameLoop.h"
 
 int main(int argc, char *argv[]){
-
-    //Tests
+    //creating a GameLoop
     GameLoop game;
 
-    game.initialize( argc, argv);
-    Life test;
+    game.initialize(argc,argv);
 
-    test = game.get_life();
+    while(!game.GameOver()){
+        game.process_events(); // processa os eventos
+        game.render();
+        usleep(game.get_fps() * 1000000);
+    }
 
-    std::vector<std::vector<Cell>> matrix;
 
-    test.check_neighbors(1,1);
-     matrix = test.get_config();
 
-    std::cout<< matrix[1][1].get_alive_neighbors() << std::endl;
-
-    return 0;
 }

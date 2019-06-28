@@ -130,10 +130,125 @@ void GameLoop::read_file(){
         }
 
         life.set_alive(vec_posi);
+        life.set_vector_alive(vec_posi);
 
         file.close();
 
         std::cout<<"Data File sucefully read !!"<< std::endl;
+}
+
+bool GameLoop::GameOver(){
+    if(extint() || stable() || options.maxgen == number_configuration){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+void GameLoop::process_events(){
+    //on our first iteration we just need to push back the current alive vector to log. since we don't need to apply the rules
+    std::vector<position> aux_alivecell;
+    
+    if (number_configuration == 0){
+        for (int i = 0; i < (int)life.get_alive().size(); i++){
+            auto vecalive = life.get_alive();
+            log[number_configuration].push_back(vecalive[i]);
+        }
+        
+    }else{
+
+        //Applying the rules - we will go through all the matrix an check neighbours        
+
+        for (int i = 1; i < life.get_rows(); i++){
+            for(int j = 1; j < life.get_columns(); j++){                
+                if (life.check_neighbors(i,j) == 3){
+                    //getting position
+                    position auxpos;
+                    auxpos.rowIndex = i;
+                    auxpos.columnIndex = j;
+
+                    //pushing back at aux alive vector
+                    aux_alivecell.push_back(auxpos);
+
+                }else if (life.check_if_alive(i,j)){
+                    if(life.check_neighbors(i,j) <= 3 && life.check_neighbors(i,j) >= 2){
+                        position auxpos;
+                        auxpos.rowIndex = i;
+                        auxpos.columnIndex = j;
+
+                        //pushing back at aux alive vector
+                        aux_alivecell.push_back(auxpos);
+                    }
+                }
+            }
+        }
+
+        //By the end we will have a vector of alive cells
+
+        //We will now reset the configuration - all the cells are going to be dead
+        life.reset_config();
+
+        //Setting the vector of alive to the new one
+        life.set_vector_alive(aux_alivecell);
+
+        //setting cell to alive on the matrix
+        life.set_alive(aux_alivecell);
+
+        number_configuration++;
+        for (int i = 0; i < (int)life.get_alive().size(); i++){
+            log[number_configuration].push_back(aux_alivecell[i]);
+        }
+        
+    }
+}
+
+void GameLoop::render(){
+    std::cout << "Configuration number: " << number_configuration + 1 << std::endl;
+    //printing configuration
+    life.print_configuration();
+
+    std::cout << std::endl; 
+}
+
+bool GameLoop::extint(){
+    if (life.get_alive().size()==0){
+        std::cout<< "Configuration is extint \n";
+        return true;
+    }else{
+        return false;
+    }
+}
+
+bool GameLoop::stable(){
+    int equal_count = 0;    
+
+    //going through the vector
+    for (int i = 0; i < number_configuration; i++){
+        
+        // used to check all configuration cells
+        for(int j = 0; j < (int)log[number_configuration].size(); j++){
+
+            //first check if size is equal
+            if(log[i].size() == log[number_configuration].size()){
+
+                //goint through all the alive positions
+                if(log[i][j].rowIndex == log[number_configuration][j].rowIndex && log[i][j].columnIndex == log[number_configuration][j].columnIndex){
+                    equal_count++;
+                    break;
+                }
+            }else{
+                break;
+            }
+        }
+
+        if (equal_count == (int)log[number_configuration].size()){
+            return true;
+        }else{
+            equal_count = 0;
+        }
+    }
+
+    return false;
 }
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GETS
@@ -144,6 +259,10 @@ Life GameLoop::get_life(){
 
 char GameLoop::get_alive_char(){
     return alive_char;
+}
+
+int GameLoop::get_fps(){
+    return options.fps;
 }
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SETS
