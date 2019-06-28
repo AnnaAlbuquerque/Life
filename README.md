@@ -24,11 +24,11 @@ Assuming you have installed Make and [Git](https://git-scm.com/), we can follow 
 
 ## Additional Information
 
-    As the programming is running, all the configurations will be displayed in the terminal and also saved on a text file "Log_Config.txt"
+As the programming is running, all the configurations will be displayed in the terminal and also saved on a text file "Log_Config.txt"
     ```
 ## Issues
 
-    In the current version works only with a quadratic matrix.
+In the current version works only with a quadratic matrix.
 
 ## Contributing
 You are welcome! Create the pull requests. 
