@@ -22,7 +22,7 @@ Assuming you have installed Make and [Git](https://git-scm.com/), we can follow 
     ```
    ./run [options] <inputfile>
 
-##Additional Information
+## Additional Information
 
     As the programming is running, all the configurations will be displayed in the terminal and also saved on a text file "Log_Config.txt"
     ```
