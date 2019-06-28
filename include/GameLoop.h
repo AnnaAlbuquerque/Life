@@ -20,7 +20,7 @@ class GameLoop{
 
         struct user_options{ //will safe all the options that the user choose via command line argument
             std::string imgdir; // Specify directory where output images are written to
-            int maxgen; //Maximum number of generations to simulate
+            int maxgen = 100; //Maximum number of generations to simulate
             int fps = 1; //Number of generations presented per second
             int blocksize = 5; //Pixel size of a cell. Default = 5.
             std::string bkgcolor; //Color name for the background. Default GREEN.

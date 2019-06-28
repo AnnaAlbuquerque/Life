@@ -5,6 +5,8 @@
 #include<iostream> //std::cout
 #include <sstream>
 #include <iomanip>  // std::setw, std::setfill
+#include <fstream> //Stream class to read and write from/to files - using std::ifstream
+
 
 #include "Cell.h"
 

@@ -22,23 +22,53 @@ Life::Life(int nRow, int nCol){
 }
 
 void Life::print_configuration(){
-     std::ostringstream data;
+    std::ostringstream data;
 
-        std::cout << "[" << get_rows() << " x " << get_columns() << "]\n" << std::endl;
+    std::cout << "[" << get_rows() << " x " << get_columns() << "]\n" << std::endl;
+    for (int i = 0; i < get_rows(); i++) {
+
+            for (int j = 0; j < get_columns(); j++) {
+                    data << std::setw(1) << Config[i][j].get_alive() << " ";
+            }
+            data << '\n';
+    }
+
+    std::cout << data.str() << std::endl;
+
+    std::string filename = "Log_Config.txt";
+    std::fstream outputFile;
+    outputFile.open(filename, std::fstream::in | std::fstream::out | std::fstream::app);
+
+    if (!outputFile){
+        outputFile.open(filename,  std::fstream::in | std::fstream::out | std::fstream::trunc);
+        
+        outputFile << "[" << get_rows() << " x " << get_columns() << "]\n" << std::endl;
         for (int i = 0; i < get_rows(); i++) {
-                if (i < 10) {
-                        data << "[" << i << "]" << std::setw(2) << " ";
-                } else {
-                        data << "[" << i << "]" << std::setw(1) << " ";
-                }
 
                 for (int j = 0; j < get_columns(); j++) {
-                        data << std::setw(1) << Config[i][j].get_alive() << " ";
+                        outputFile << std::setw(1) << Config[i][j].get_alive() << " ";
                 }
-                data << '\n';
+                outputFile << '\n';
         }
 
-        std::cout << data.str() << std::endl;
+        outputFile << "\n";
+        
+        outputFile.close();
+
+    }else{
+        outputFile << "[" << get_rows() << " x " << get_columns() << "]\n" << std::endl;
+        for (int i = 0; i < get_rows(); i++) {
+
+                for (int j = 0; j < get_columns(); j++) {
+                        outputFile << std::setw(1) << Config[i][j].get_alive() << " ";
+                }
+                outputFile << '\n';
+        }
+
+        outputFile << "\n";
+        
+        outputFile.close();
+    }
 }
 
 int Life::check_neighbors(int i, int j){
@@ -108,7 +138,7 @@ int Life::check_neighbors(int i, int j){
 }
 
 bool Life::check_if_alive(int row, int column){
-    for (int i = 0; i < alive_cells.size(); i++){
+    for (int i = 0; i < (int)alive_cells.size(); i++){
         if (alive_cells[i].rowIndex == row && alive_cells[i].columnIndex == column){
             return true;
         }

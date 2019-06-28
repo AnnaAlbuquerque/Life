@@ -12,7 +12,4 @@ int main(int argc, char *argv[]){
         game.render();
         usleep(game.get_fps() * 1000000);
     }
-
-
-
 }

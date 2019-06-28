@@ -6,9 +6,13 @@ void GameLoop::initialize(int argc, char *argv[]){
         exit(EXIT_FAILURE);
     }
 
+    log.resize(100);
+
     read_file();
 
     init_msg();
+
+    std::cout<<"File Initial Configuration: \n";
 
     life.print_configuration();
 
@@ -137,8 +141,14 @@ void GameLoop::read_file(){
         std::cout<<"Data File sucefully read !!"<< std::endl;
 }
 
+
 bool GameLoop::GameOver(){
-    if(extint() || stable() || options.maxgen == number_configuration){
+    if(extint()){
+        return true;
+    }else if (stable()){
+        return true;
+    }else if(options.maxgen == number_configuration){
+        std::cout<<"maximum number of configuration reached\n";
         return true;
     }else{
         return false;
@@ -151,16 +161,17 @@ void GameLoop::process_events(){
     
     if (number_configuration == 0){
         for (int i = 0; i < (int)life.get_alive().size(); i++){
-            auto vecalive = life.get_alive();
-            log[number_configuration].push_back(vecalive[i]);
+            aux_alivecell = life.get_alive();
+            log[number_configuration].push_back(aux_alivecell[i]);
         }
+        number_configuration++;
         
     }else{
 
         //Applying the rules - we will go through all the matrix an check neighbours        
 
-        for (int i = 1; i < life.get_rows(); i++){
-            for(int j = 1; j < life.get_columns(); j++){                
+        for (int i = 1; i < life.get_rows() - 1; i++){
+            for(int j = 1; j < life.get_columns() - 1; j++){                
                 if (life.check_neighbors(i,j) == 3){
                     //getting position
                     position auxpos;
@@ -203,7 +214,7 @@ void GameLoop::process_events(){
 }
 
 void GameLoop::render(){
-    std::cout << "Configuration number: " << number_configuration + 1 << std::endl;
+    std::cout << "Configuration number: " << number_configuration << std::endl;
     //printing configuration
     life.print_configuration();
 
@@ -220,31 +231,28 @@ bool GameLoop::extint(){
 }
 
 bool GameLoop::stable(){
-    int equal_count = 0;    
-
-    //going through the vector
-    for (int i = 0; i < number_configuration; i++){
+   // Verify if the current generation is equal to a previous generation.
+    int curr = number_configuration - 1;
+    for (auto i = 0; i < curr; i++) {  
+        bool equal = true;
         
-        // used to check all configuration cells
-        for(int j = 0; j < (int)log[number_configuration].size(); j++){
+        for (auto j = 0; j <= (int)log[curr].size(); j++) {       
+            if (log[i].size() == log[curr].size()) {  
+                    if ((log[i][j].rowIndex != log[curr][j].rowIndex) &&
+                        (log[i][j].columnIndex != log[curr][j].columnIndex)) {
+                            equal = false;
+                            break;
+                    }
 
-            //first check if size is equal
-            if(log[i].size() == log[number_configuration].size()){
-
-                //goint through all the alive positions
-                if(log[i][j].rowIndex == log[number_configuration][j].rowIndex && log[i][j].columnIndex == log[number_configuration][j].columnIndex){
-                    equal_count++;
+            } else {
+                    equal = false;
                     break;
-                }
-            }else{
-                break;
             }
         }
 
-        if (equal_count == (int)log[number_configuration].size()){
+        if (equal) {
+            std::cout<<"Configuration is stable \n";
             return true;
-        }else{
-            equal_count = 0;
         }
     }
 
