@@ -1,33 +1,22 @@
 #include <iostream> //std::cout
-#include "../include/Life.h"
+#include "../include/GameLoop.h"
 
-int main(){
+int main(int argc, char *argv[]){
 
     //Tests
-    Life life(3,3);
+    GameLoop game;
 
-     std::vector<position> alive;
+    game.initialize( argc, argv);
+    Life test;
 
-    for(int i = 0 ; i < 3; i++){
-        for(int j = 0; j < 3; j++){
-            position pos;
-            pos.rowIndex = i;
-            pos.columnIndex = j;
-            if (i == 1 || i == 0){
-                alive.push_back(pos);
-            }
-        }
-    }
-
-     life.set_alive(alive);
+    test = game.get_life();
 
     std::vector<std::vector<Cell>> matrix;
-    matrix = life.get_config();
+    matrix = test.get_config();
 
-
-    for(int i = 0 ; i < 3; i++){
-        for(int j = 0; j < 3; j++){
-            std::cout << matrix[i][j].get_alive() << "   ";
+    for(int i = 0 ; i < test.get_rows(); i++){
+        for(int j = 0; j < test.get_columns(); j++){
+            std::cout << matrix[i + 1][j + 1].get_alive() << "   ";
 
         }
 
@@ -36,7 +25,7 @@ int main(){
 
     matrix[1][1].check_neighbors(matrix);
 
-    std::cout<< matrix[1][1].get_alive_neighbors()<< std::endl;
+    std::cout<< matrix[2][2].get_alive_neighbors()<< std::endl;
 
     return 0;
 }

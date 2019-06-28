@@ -34,9 +34,18 @@ std::vector<position> Life::get_alive(){
     return alive_cells;
 }
 
- std::vector<std::vector<Cell>> Life::get_config(){
-     return Config;
- }
+std::vector<std::vector<Cell>> Life::get_config(){
+    return Config;
+}
+
+int Life::get_rows(){
+    return rows;
+}
+
+int Life::get_columns(){
+    return columns ;
+}
+
 
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SETS
@@ -44,5 +53,33 @@ std::vector<position> Life::get_alive(){
 void Life::set_alive(std::vector<position> vector_position){
     for (auto const& value: vector_position){
         Config[value.rowIndex][value.columnIndex].set_alive(true);
+    }
+}
+
+void Life::set_rows_columns(int r, int c){
+    //Adding 2 to create safe zone
+    rows = r + 2;
+    columns = c + 2; 
+
+    //Resizing Matrix
+    Config.resize(rows);
+    for(int i = 0; i < columns; i++){
+        Config[i].resize(columns);
+    }
+
+    //Setting cells position, and alive to false (at first they're all dead)
+    for(int i = 0; i < rows; i++){
+        for(int j = 0; j < columns; j++){
+            //setting a auxiliar position
+            position pos;
+            pos.rowIndex = i;
+            pos.columnIndex = j;
+
+            //setting cell variable position
+            Config[i][j].set_position(pos);
+
+            //setting cell variable alive to false
+            Config[i][j].set_alive(false);
+        }
     }
 }
