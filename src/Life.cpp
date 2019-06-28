@@ -14,18 +14,97 @@ Life::Life(int nRow, int nCol){
     //Setting cells position, and alive to false (at first they're all dead)
     for(int i = 0; i < rows; i++){
         for(int j = 0; j < columns; j++){
-            //setting a auxiliar position
-            position pos;
-            pos.rowIndex = i;
-            pos.columnIndex = j;
-
-            //setting cell variable position
-            Config[i][j].set_position(pos);
 
             //setting cell variable alive to false
             Config[i][j].set_alive(false);
         }
     }
+}
+
+void Life::print_configuration(){
+     std::ostringstream data;
+
+        std::cout << "[" << get_rows() << " x " << get_columns() << "]\n" << std::endl;
+        for (int i = 0; i < get_rows(); i++) {
+                if (i < 10) {
+                        data << "[" << i << "]" << std::setw(2) << " ";
+                } else {
+                        data << "[" << i << "]" << std::setw(1) << " ";
+                }
+
+                for (int j = 0; j < get_columns(); j++) {
+                        data << std::setw(1) << Config[i][j].get_alive() << " ";
+                }
+                data << '\n';
+        }
+
+        std::cout << data.str() << std::endl;
+}
+
+void Life::check_neighbors(int i, int j){
+    //It'll be used to see how many neighbours a cell has
+    int count = 0;
+
+    //We need to check 8 neighbors
+
+    /*
+    X - current Cell
+    ----------------------------
+    |        |        |        |
+    |  11    |   12   |   13   |
+    |        |        |        |
+    ----------------------------
+    |        |   22   |        |
+    |  21    |   X    |  23    |
+    |        |        |        |
+    ----------------------------
+    |        |        |        |
+    |   31   |  32    |  33    |
+    |        |        |        |
+    ----------------------------
+     */
+
+    //Checking 11 -> curentI - 1 e currentJ -1
+    if(Config[i - 1][j - 1].get_alive()){
+        count++;
+    }
+
+    //Checking 12 -> curentI - 1
+    if(Config[i - 1][j].get_alive()){
+        count++;
+    }
+
+    //Checking 13 -> curentI - 1 e currentJ +1
+    if(Config[i - 1][j + 1].get_alive()){
+        count++;
+    }
+
+    //Checking 21 -> currentJ -1
+    if(Config[i][j - 1].get_alive()){
+        count++;
+    }
+
+    //Checking 23 ->  currentJ + 1
+    if(Config[i][j + 1].get_alive()){
+        count++;
+    }
+
+    //Checking 31 -> curentI + 1 e currentJ -1
+    if(Config[i + 1][j - 1].get_alive()){
+        count++;
+    }
+
+    //Checking 32 -> curentI + 1 e currentJ
+    if(Config[i + 1][j].get_alive()){
+        count++;
+    }
+
+    //Checking 33 -> curentI + 1 e currentJ + 1
+    if(Config[i+ 1][j + 1].get_alive()){
+        count++;
+    }
+
+    Config[i][j].set_alive_neighbors(count);    
 }
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GETS
@@ -70,13 +149,6 @@ void Life::set_rows_columns(int r, int c){
     //Setting cells position, and alive to false (at first they're all dead)
     for(int i = 0; i < rows; i++){
         for(int j = 0; j < columns; j++){
-            //setting a auxiliar position
-            position pos;
-            pos.rowIndex = i;
-            pos.columnIndex = j;
-
-            //setting cell variable position
-            Config[i][j].set_position(pos);
 
             //setting cell variable alive to false
             Config[i][j].set_alive(false);

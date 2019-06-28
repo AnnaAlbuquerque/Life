@@ -1,7 +1,11 @@
 #ifndef LIFE_H
 #define LIFE_H
 
-#include <vector>
+#include <vector> //std::vector
+#include<iostream> //std::cout
+#include <sstream>
+#include <iomanip>  // std::setw, std::setfill
+
 #include "Cell.h"
 
 class Life{
@@ -18,6 +22,13 @@ class Life{
 
         //! \brief Destructor
         ~Life(){}
+
+        //! \brief Print the matrix
+        void print_configuration();
+
+        //! \brief Check how many neighbors a specific Cell has
+        //! \param two integer first represents cell's row and second cell's column
+        void check_neighbors (int i, int j);
 
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> GETS
 

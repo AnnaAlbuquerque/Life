@@ -10,6 +10,8 @@ void GameLoop::initialize(int argc, char *argv[]){
 
     init_msg();
 
+    life.print_configuration();
+
 }
 
 int GameLoop::read_options (int argc, char *argv[]){
@@ -114,11 +116,11 @@ void GameLoop::read_file(){
         std::string line;
         std::vector<position> vec_posi;
 
-        while((std::getline(file,line))  && (i < life.get_rows() - 2)){
-            for(int j = 0; j < (int)line.size() && (j < life.get_columns() - 2); j++ ){
+        while((std::getline(file,line))  && (i < life.get_rows())){
+            for(int j = 0; j < (int)line.size() && (j < life.get_columns()); j++ ){
                 if(line[j] == get_alive_char()){
                     position aux;
-                    aux.rowIndex = i + 1;
+                    aux.rowIndex = i;
                     aux.columnIndex = j + 1;
                     vec_posi.push_back(aux);
                 }
